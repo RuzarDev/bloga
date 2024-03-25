@@ -1,6 +1,10 @@
 <?php
-        include "../../path.php";
-        include "../../app/controllers/posts.php";
+include "../../path.php";
+include "../../app/controllers/posts.php";
+
+// Fetch posts from the database
+$postsAdm = selectAllFromPostsWithUsers('posts', 'users');
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -27,24 +31,27 @@
 <?php include("../../app/include/header-admin.php"); ?>
 
 <div class="container">
-<?php include "../../app/include/sidebar-admin.php"; ?>
+    <?php include "../../app/include/sidebar-admin.php"; ?>
 
-        <div class="posts col-9">
-            <div class="button row">
-                <a href="<?php echo BASE_URL . "admin/posts/create.php";?>" class="col-2 btn btn-success">Создать</a>
-                <span class="col-1"></span>
-                <a href="<?php echo BASE_URL . "admin/posts/index.php";?>" class="col-3 btn btn-warning">Редактировать</a>
-            </div>
-            <div class="row title-table">
-                <h2>Управление записями</h2>
-                <div class="mb-12 col-12 col-md-12 err">
+    <div class="posts col-9">
+        <div class="button row">
+            <a href="<?php echo BASE_URL . "admin/posts/create.php";?>" class="col-2 btn btn-success">Создать</a>
+            <span class="col-1"></span>
+            <a href="<?php echo BASE_URL . "admin/posts/index.php";?>" class="col-3 btn btn-warning">Редактировать</a>
+        </div>
+        <div class="row title-table">
+            <h2>Управление записями</h2>
+            <div class="mb-12 col-12 col-md-12 err">
+                <?php if (isset($_SESSION['error'])): ?>
                     <p><?=$_SESSION['error'];?></p>
-                </div>
-                <div class="col-1">ID</div>
-                <div class="col-5">Название</div>
-                <div class="col-2">Автор</div>
-                <div class="col-4">Управление</div>
+                <?php endif; ?>
             </div>
+            <div class="col-1">ID</div>
+            <div class="col-5">Название</div>
+            <div class="col-2">Автор</div>
+            <div class="col-4">Управление</div>
+        </div>
+        <?php if (isset($postsAdm)): ?>
             <?php foreach ($postsAdm as $key => $post): ?>
                 <div class="row post">
                     <div class="id col-1"><?=$key + 1; ?></div>
@@ -59,15 +66,13 @@
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
-        </div>
+        <?php endif; ?>
     </div>
 </div>
-
 
 <!-- footer -->
 <?php include("../../app/include/footer.php"); ?>
 <!-- // footer -->
-
 
 <!-- Optional JavaScript; choose one of the two! -->
 
